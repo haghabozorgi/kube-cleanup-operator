@@ -151,7 +151,7 @@ func (c *PodController) deleteObjects(podObj *v1.Pod, parentJobName string, dryR
 	// Delete Pod
         policy := metav1.DeletePropagationForeground
 	if !dryRun {
-		log.Printf("LLLDeleting pod '%s'", podObj.Name)
+		log.Printf("Deleting pod '%s'", podObj.Name)
                 po := metav1.DeleteOptions{
                   PropagationPolicy: &policy,
                 }
@@ -161,7 +161,7 @@ func (c *PodController) deleteObjects(podObj *v1.Pod, parentJobName string, dryR
 	}
 	// Delete Job itself
 	if !dryRun {
-		log.Printf("LLLDeleting job '%s'", parentJobName)
+		log.Printf("Deleting job '%s'", parentJobName)
                 jo := metav1.DeleteOptions{
                   PropagationPolicy: &policy,
                 }
