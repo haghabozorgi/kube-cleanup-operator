@@ -149,17 +149,22 @@ func (c *PodController) getExecutionTimeHours(podObj *v1.Pod) (executionTimeHour
 
 func (c *PodController) deleteObjects(podObj *v1.Pod, parentJobName string, dryRun bool) {
 	// Delete Pod
+        policy := metav1.DeletePropagationForeground
 	if !dryRun {
-		log.Printf("Deleting pod '%s'", podObj.Name)
-		var po metav1.DeleteOptions
+		log.Printf("LLLDeleting pod '%s'", podObj.Name)
+                po := metav1.DeleteOptions{
+                  PropagationPolicy: &policy,
+                }
 		c.kclient.CoreV1().Pods(podObj.Namespace).Delete(podObj.Name, &po)
 	} else {
 		log.Printf("dry-run: Pod '%s' would have been deleted", podObj.Name)
 	}
 	// Delete Job itself
 	if !dryRun {
-		log.Printf("Deleting job '%s'", parentJobName)
-		var jo metav1.DeleteOptions
+		log.Printf("LLLDeleting job '%s'", parentJobName)
+                jo := metav1.DeleteOptions{
+                  PropagationPolicy: &policy,
+                }
 		c.kclient.BatchV1Client.Jobs(podObj.Namespace).Delete(parentJobName, &jo)
 	} else {
 		log.Printf("dry-run: Job '%s' would have been deleted", parentJobName)
